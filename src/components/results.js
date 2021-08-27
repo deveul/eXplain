@@ -124,7 +124,7 @@ const Results = () => {
                     </Select>
                 </div>
             </div>
-            {impacters.map(impacter => <Impacter {...impacter} />)}
+            {impacters.map((impacter, index) => <Impacter key={index} {...impacter} />)}
         </div>
     )
 }

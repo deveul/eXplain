@@ -1,12 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Menu from './components/menu';
 import Header from './components/header';
 import Filters from './components/filters';
+import {
+	BrowserRouter as Router,
+	Switch,
+	Route,
+} from "react-router-dom";
 
 import './App.css';
-import { createTheme, Divider } from '@material-ui/core';
+import { createTheme, CssBaseline, Divider } from '@material-ui/core';
 import Impacters from './components/impacters';
 
 const useStyles = makeStyles((theme) => ({
@@ -25,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 		display: 'flex',
 		flexDirection: 'row',
 		backgroundColor: '#EDF3F7',
-		height: '100%',
+		flex: 1,
 		width: '100%'
 	},
 }));
@@ -35,28 +40,28 @@ const theme = createTheme();
 
 function App() {
 	const classes = useStyles();
-	const [currentTime, setCurrentTime] = useState(0);
-
-	useEffect(() => {
-		fetch('/time').then(res => res.json()).then(data => {
-			setCurrentTime(data.time);
-		});
-	}, []);
 
 	return (
-		<div className="App">
-			<div className={classes.root}>
-				<Menu />
-				<div className={classes.content}>
-					<Header />
-					<div className={classes.mainContent}>
-						<Filters />
-						<Divider orientation="vertical" flexItem />
-						<Impacters />
+		<Router>
+			<Switch>
+				<Route path="/">
+					<CssBaseline />
+					<div className="App">
+						<div className={classes.root}>
+							<Menu />
+							<div className={classes.content}>
+								<Header />
+								<div className={classes.mainContent}>
+									<Filters />
+									<Divider orientation="vertical" flexItem />
+									<Impacters />
+								</div>
+							</div>
+						</div>
 					</div>
-				</div>
-			</div>
-		</div>
+				</Route>
+			</Switch>
+		</Router>
 	);
 }
 

@@ -44,6 +44,17 @@ const useStyles = makeStyles((theme) => ({
 			width: theme.spacing(7) + 1,
 		},
 	},
+	drawerPaper: {
+		width: 250,
+		overflow: "auto",
+		height: "100%",
+		[theme.breakpoints.up("md")]: {
+		  overflow: "auto",
+		  width: drawerWidth,
+		  position: "relative",
+		  height: "100%"
+		}
+	},
 	toolbar: {
 		display: 'flex',
 		alignItems: 'center',
@@ -112,7 +123,7 @@ export default function Menu() {
 				paper: clsx({
 					[classes.drawerOpen]: open,
 					[classes.drawerClose]: !open,
-					[classes.customBorder]: !open,
+					// [classes.customBorder]: !open,
 				}),
 			}}
 		>

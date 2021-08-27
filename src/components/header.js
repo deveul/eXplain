@@ -12,18 +12,17 @@ const useStyles = makeStyles((theme) => ({
     headerColumn: {
         display: 'flex',
         flexDirection: 'column',
-        margin: theme.spacing(1)
+        margin: theme.spacing(1),
+        height: 'min-content'
     },
     headerRow: {
         display: 'flex',
         flexDirection: 'row',
+        alignItems: 'center'
     },
     subtitle1: {
         textDecoration: 'underline;bold',
         color: "#96A8B8"
-    },
-    paddingTop: {
-        paddingTop: "12px"
     },
     button: {
         borderRadius: "25px",
@@ -37,13 +36,18 @@ const useStyles = makeStyles((theme) => ({
     bold: {
         fontWeight: 'bold'
     },
-    buttonMargin: {
+    firstRowMargin: {
         margin: theme.spacing(1)
     },
     orange: {
         backgroundColor: "#FC4C02",
         color: "#fff"
-    }
+    },
+    smallIcon: {
+        width: 24,
+        height: 24,
+        marginRight: theme.spacing(1)
+    },
 }))
 
 const Header = () => {
@@ -51,15 +55,15 @@ const Header = () => {
 
     return (
         <div className={classes.headerColumn}>
-            <div className={classes.headerRow}>
-                <IconButton style={{ backgroundColor: "#EDF3F7" }}>
+            <div className={clsx(classes.headerRow, classes.firstRowMargin)}>
+                <IconButton className={classes.smallIcon} style={{ backgroundColor: "#EDF3F7" }}>
                     <ArrowBackIcon />
                 </IconButton>
-                <Typography className={clsx(classes.subtitle1, classes.paddingTop)} variant="body1" gutterBottom>
+                <Typography className={clsx(classes.subtitle1, classes.paddingTop)} variant="body1">
                     Recherche
                 </Typography>
                 <NavigateNextIcon style={{color:"#96A8B8"}} className={classes.paddingTop} />
-                <Typography className={clsx(classes.bold, classes.paddingTop)} variant="body1" gutterBottom>
+                <Typography className={clsx(classes.bold, classes.paddingTop)} variant="body1">
                     Résultats de recherche
                 </Typography>
             </div>

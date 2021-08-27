@@ -1,24 +1,31 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
-import { Checkbox, Collapse, FormControl, MenuItem, Select, InputAdornment, List, ListItem, ListItemText, TextField, Typography, Divider, IconButton } from '@material-ui/core';
+import { Checkbox, FormControl, MenuItem, Select, InputAdornment, TextField, Typography, Divider, IconButton } from '@material-ui/core';
 import ReplayIcon from '@material-ui/icons/Replay';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import SearchIcon from '@material-ui/icons/Search';
-import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import { AiOutlineCheckSquare, AiOutlineExpandAlt } from 'react-icons/ai'
+
+import Territories from './territories';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',
+        height: '100%',
         margin: theme.spacing(1)
+    },
+    fullHeight: {
+        height: '100%'
     },
     headerColumn: {
         width: '100%',
         display: 'flex',
         flexDirection: 'column',
         flex: 2,
+        height: '-webkit-fill-available'
     },
     headerRow: {
         width: '100%',
@@ -121,42 +128,21 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-const OrangeCheckbox = withStyles({
-    root: {
-        color: '#FEE2D6',
-        '&$checked': {
-            color: '#FEE2D6',
-            "& .MuiIconButton-label": {
-                position: "relative",
-                zIndex: 0
-            },
-            "& .MuiIconButton-label:after": {
-                content: '""',
-                left: 4,
-                top: 4,
-                height: 15,
-                width: 15,
-                position: "absolute",
-                backgroundColor: '#FC4E07',
-                zIndex: -1
-            },
-        }
-    },
-    checked: {},
-})((props) => <Checkbox color="default" {...props} />);
-
 const Filters = () => {
     const classes = useStyles();
-    const [open, setOpen] = React.useState(true);
-    const [openNested, setOpenNested] = React.useState(true);
+    const [search, setSearch] = useState('');
+    const history = useHistory();
 
-    const handleClick = () => {
-        setOpen(!open);
-    };
+    const keyPress = e => {
+        if (e.keyCode == 13) {
+            handleSubmit();
+        }
+    }
 
-    const handleClickNested = () => {
-        setOpenNested(!openNested);
-    };
+    const handleSubmit = () => {
+        var num = search.replace(/[^0-9]/g,'');
+        history.push(`/search/FRDEPA${num}/impacter`);
+    }
 
     return (
         <div className={clsx(classes.root, classes.headerColumn)}>
@@ -170,10 +156,7 @@ const Filters = () => {
             </div>
             <div className={classes.headerRow}>
                 <FormControl variant="outlined" className={classes.fullWidth}>
-                    {/* <InputLabel id="demo-simple-select-outlined-label">Fonctions</InputLabel> */}
                     <Select
-                        labelId="demo-simple-select-outlined-label"
-                        id="demo-simple-select-outlined"
                         value={'Fonction'}
                         className={clsx(classes.fullWidthSelect, classes.marginBlock)}
                         classes={{
@@ -182,7 +165,6 @@ const Filters = () => {
                             icon: classes.selectIcon,
                         }}
                         IconComponent={ExpandMore}
-                        disableUnderline
                     >
                         <MenuItem value="Fonction">
                             Fonctions
@@ -197,7 +179,6 @@ const Filters = () => {
                 <div className={classes.headerRow}>
                     <FormControl className={classes.fullWidth}>
                         <Select
-                            id="demo-simple-select-outlined"
                             value={'Fonction'}
                             className={clsx(classes.fullWidthSelect, classes.paddingPerimeter)}
                             disableUnderline
@@ -227,11 +208,16 @@ const Filters = () => {
                         variant="outlined"
                         placeholder="Rechercher une localité"
                         className={classes.searchTextfield}
+                        onKeyDown={keyPress}
+                        value={search}
+                        onChange={e => setSearch(e.target.value)}
                         InputProps={{
                             classes: { input: classes.input },
                             endAdornment:
                                 <InputAdornment position="end">
-                                    <SearchIcon />
+                                    <IconButton style={{padding: 0}} value={search} onClick={handleSubmit}>
+                                        <SearchIcon />
+                                    </IconButton>
                                 </InputAdornment>
                         }}
                     />
@@ -242,35 +228,7 @@ const Filters = () => {
                     <Typography className={classes.subtitle2} variant="subtitle1"><AiOutlineExpandAlt />{'\u00A0'}Tout réduire</Typography>
                 </div>
                 <Divider />
-                <List dense={true}>
-                    <ListItem button>
-                        <IconButton size='small' onClick={handleClick}>
-                            {open ? <ExpandLess /> : <ExpandMore />}
-                        </IconButton>
-                        <OrangeCheckbox />
-                        <ListItemText primary="Aube" />
-                    </ListItem>
-                    <Collapse in={open} timeout="auto" unmountOnExit>
-                        <List dense={true} component="div" disablePadding>
-                            <ListItem button className={classes.nested}>
-                                <IconButton size='small' onClick={handleClickNested}>
-                                    {openNested ? <ExpandLess /> : <ExpandMore />}
-                                </IconButton>
-                                <OrangeCheckbox />
-                                <ListItemText primary="CA des portes de Romilly-Sur-Seine" />
-                            </ListItem>
-                        </List>
-                        <Collapse in={openNested} timeout="auto" unmountOnExit>
-                            <List dense={true} component="div" disablePadding>
-                                <ListItem button className={classes.nestedDeep}>
-                                    <OrangeCheckbox />
-                                    <ListItemText primary="Assenay" />
-                                </ListItem>
-                            </List>
-                        </Collapse>
-                    </Collapse>
-                </List>
-
+                <Territories />
             </div>
         </div>
     )
