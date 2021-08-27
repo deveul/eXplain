@@ -78,7 +78,7 @@ const Results = () => {
                     <Typography className={classes.bold} variant="h6">
                         357 résultats
                     </Typography>
-                    <Typography className={classes.subtitle} variant="subtitle1">
+                    <Typography className={classes.subtitle} variant="caption">
                         Issu du répertoire National des Élus
                     </Typography>
                 </div>

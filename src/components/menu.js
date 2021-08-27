@@ -31,9 +31,11 @@ const useStyles = makeStyles((theme) => ({
 			easing: theme.transitions.easing.sharp,
 			duration: theme.transitions.duration.enteringScreen,
 		}),
+		borderRight: 0
 	},
 	drawerClose: {
-		backgroundColor: '#FC4C02',
+		// backgroundColor: '#FC4C02',
+		backgroundColor: '#FFFFFF',
 		transition: theme.transitions.create('width', {
 			easing: theme.transitions.easing.sharp,
 			duration: theme.transitions.duration.leavingScreen,
@@ -49,10 +51,10 @@ const useStyles = makeStyles((theme) => ({
 		overflow: "auto",
 		height: "100%",
 		[theme.breakpoints.up("md")]: {
-		  overflow: "auto",
-		  width: drawerWidth,
-		  position: "relative",
-		  height: "100%"
+			overflow: "auto",
+			width: drawerWidth,
+			position: "relative",
+			height: "100%"
 		}
 	},
 	toolbar: {
@@ -60,6 +62,7 @@ const useStyles = makeStyles((theme) => ({
 		alignItems: 'center',
 		justifyContent: 'flex-end',
 		padding: theme.spacing(0, 1),
+		// minHeight: '48px !important',
 		// necessary for content to be below app bar
 		...theme.mixins.toolbar,
 	},
@@ -70,19 +73,36 @@ const useStyles = makeStyles((theme) => ({
 		marginInline: 'auto'
 	},
 	whiteElement: {
-		color: "#fff"
+		color: "#fff",
 	},
 	iconButtonBorder: {
 		border: "solid 2px",
 		padding: 0,
-		color: "#fff"
+		color: "#fff",
+		left: '70%',
+		backgroundColor: '#FC4C02'
 	},
 	smallIcon: {
 		width: 30,
 		height: 30,
 	},
 	customBorder: {
-		borderRadius: "50% 100% 100% 50% / 0% 8% 8% 0%"
+		borderRadius: "0% 100% 0% 0% / 10% 5% 10% 10%",
+		borderRight: 0
+	},
+	customColor: {
+		backgroundColor: '#FC4C02',
+	},
+	divIconsMenu: {
+		display: 'flex',
+		flexDirection: 'column',
+		height: 'inherit',
+		justifyContent: 'space-between',
+		padding: 0
+	},
+	fixedDiv: {
+		overflow: 'visible',
+		position: 'fixed'
 	}
 }));
 
@@ -120,39 +140,60 @@ export default function Menu() {
 				[classes.drawerClose]: !open,
 			})}
 			classes={{
-				paper: clsx({
+				paper: clsx(classes.customColor, {
 					[classes.drawerOpen]: open,
 					[classes.drawerClose]: !open,
-					// [classes.customBorder]: !open,
+					[classes.customBorder]: !open,
 				}),
 			}}
 		>
-			<Typography className={classes.goodwillLogo}>GW</Typography>
-			<div className={classes.toolbar}>
-				<IconButton
-					className={classes.iconButtonBorder}
-					// iconStyle={classes.smallIcon}
-					onClick={switchDrawer}>
-					{open ? <ChevronLeftIcon className={classes.whiteElement} /> : <ChevronRightIcon className={classes.whiteElement} />}
-				</IconButton>
+			<Typography className={classes.goodwillLogo} variant="h6">GW</Typography>
+			<div className={classes.toolbar} style={{minHeight: 48}}>
+				<div className={classes.fixedDiv}>
+					<IconButton
+						className={classes.iconButtonBorder}
+						onClick={switchDrawer}>
+						{open ? <ChevronLeftIcon className={classes.whiteElement} /> : <ChevronRightIcon className={classes.whiteElement} />}
+					</IconButton>
+				</div>
 			</div>
-			<List>
-				{iconList.map((item, index) => {
-					return <MyListItem
-						key={index}
-						value={item.value}
-						label={item.label}
-						selectedIcon={selectedIcon}
-						setSelectedIcon={setSelectedIcon}
-					/>
-				})}
-			</List>
-			<MyListItem
-				value="account"
-				label="Mon compte"
-				selectedIcon={selectedIcon}
-				setSelectedIcon={setSelectedIcon}
-			/>
+			<div className={classes.divIconsMenu}>
+				<div>
+					<List style={{padding:0}}>
+						{iconList.map((item, index) => {
+							return <MyListItem
+								key={index}
+								value={item.value}
+								label={item.label}
+								selectedIcon={selectedIcon}
+								setSelectedIcon={setSelectedIcon}
+							/>
+						})}
+					</List>
+				</div>
+				<div>
+					<div style={{ backgroundColor: '#FFFFFF' }}>
+						<div style={{ backgroundColor: '#FC4C02', borderRadius: '0% 100% 100% 0% / 10% 0% 50% 10%' }}>
+							<MyListItem
+								value="account"
+								label="Mon compte"
+								selectedIcon={selectedIcon}
+								setSelectedIcon={setSelectedIcon}
+							/>
+						</div>
+					</div>
+					<div style={{ backgroundColor: '#EDF3F7' }}>
+						<div style={{ backgroundColor: '#FFFFFF', borderRadius: '0% 100% 100% 0% / 10% 0% 50% 10%' }}>
+							<MyListItem
+								value="information"
+								label="Informations"
+								selectedIcon={selectedIcon}
+								setSelectedIcon={setSelectedIcon}
+							/>
+						</div>
+					</div>
+				</div>
+			</div>
 		</Drawer>
 	);
 }

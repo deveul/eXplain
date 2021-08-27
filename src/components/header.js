@@ -48,6 +48,9 @@ const useStyles = makeStyles((theme) => ({
         height: 24,
         marginRight: theme.spacing(1)
     },
+    buttonMargin: {
+        marginInline: theme.spacing(1)
+    }
 }))
 
 const Header = () => {
